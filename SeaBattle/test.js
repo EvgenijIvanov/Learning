@@ -1,10 +1,8 @@
 'use strict';
 
-var seabatle = {
-	battleField: null,
-	shipLenght: null,
-	messageError:"0 error!",
-	creatingField: function(n){
+function Seabatle() {
+	this.messageError ="0 error!",
+	this.creatingField = function(n){
 		this.battleField = new Array(n);
 			for (var i = 0; i < n; i++){
 			this.battleField[i] = new Array(n)
@@ -18,15 +16,15 @@ var seabatle = {
 					}
 			}																		// shipLenght - палубность корабля от 1 до 4
 	},																				// x,y - начальные координаты для строительства корабля, 
-	requestBuildingShip : function(x,y,shipLenght,direction){   // direction - вектор направления: принимает значения '1' - вертикальный корабль, или "0" - горизонтальнный						
+	this.requestBuildingShip = function(x,y,shipLenght,direction){   // direction - вектор направления: принимает значения '1' - вертикальный корабль, или "0" - горизонтальнный						
 		// debugger;
-		if (this.validationSize(x,y) && this.validationMargin(x,y) && this.validationshipLenght(x,y,shipLenght,direction)) {	
-		 	this.buildingShip(x,y,direction);
+		if (validationSize(x,y) && validationMargin(x,y) && validationshipLenght(x,y,shipLenght,direction)) {	
+		 	buildingShip(x,y,direction);
 		} else {
 			console.log(this.messageError);
 		}
-	},
-	buildingShip: function(x,y,direction){
+	}
+		function buildingShip(x,y,direction){
 			// debugger;
 			for(var i = (x-1); i <= (x + 1); i++ ){					// циклы для "построения" вокруг корабля "рамки" толщиной 1 квадрат
 					if(i < 0 || i > this.battleField.length - 1) continue;
@@ -44,17 +42,17 @@ var seabatle = {
 				} else {
 					this.buildingShip(x,(y+1),direction);
 				}
-	},
-	validationSize: function(x,y){
-		// debugger;
+	}
+		function validationSize (x,y){
+		debugger;
 		if (x > this.battleField.length || y > this.battleField.length) {
 			this.messageError = 'Координаты за пределами поля боя!';
 			return false;
 		} else {
 			return true;
 		}
-	},
-	validationMargin: function(x,y){
+	}
+	 	function validationMargin (x,y){
 		// debugger;
 		if (this.battleField[x][y].margin == true) {
 			this.messageError = 'Слишком близко к другому кораблю! Задайте другие координаты!';
@@ -62,8 +60,8 @@ var seabatle = {
 		} else {
 			return true;
 		}
-	},
-	validationshipLenght: function(x,y,shipLenght,direction){
+	}
+	 	function validationshipLenght (x,y,shipLenght,direction){
 			// debugger;
 		if(shipLenght >= 1 && shipLenght <= 4){
 			if(direction == 1){
@@ -89,7 +87,9 @@ var seabatle = {
 		}
 	}
 }	
+var seabatle = new Seabatle();
 seabatle.creatingField(10);
-seabatle.requestBuildingShip(3,3,4,1);
 console.table(seabatle.battleField);
+seabatle.requestBuildingShip(3,3,4,1);
+
 
