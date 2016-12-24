@@ -1,26 +1,30 @@
 'use strict';
 
-var mileageHerd = 0;
-
-function createHorse(name){
+function CreateHorse(name){
 	this.name = name;
 	var mileage = 0;
 	this.runing = function(mile){
+		// debugger;
 		mileage = mileage+mile;
-		mileageHerd = mileageHerd+mileage;
+		this.constructor.prototype.mileageHerd = this.constructor.prototype.mileageHerd+mileage;
 	};
 	this.toRun = function(){
 		console.log(mileage);
 	};
 	this.allRun = function(){
-		console.log(mileageHerd);
+		console.log(this.constructor.prototype.mileageHerd);
 	}
 }
+CreateHorse.prototype.mileageHerd = 0;
 
-var firsthorse = new createHorse('Пушинка');
-var secondhorse = new createHorse('Пуговка');
-var thirdhorse = new createHorse('Хромая');
-var fourthhorse = new createHorse('Горбунок');
-var fifthhorse = new createHorse('Т-34');
+var firsthorse = new CreateHorse('Пушинка');
+var secondhorse = new CreateHorse('Пуговка');
+var thirdhorse = new CreateHorse('Хромая');
+var fourthhorse = new CreateHorse('Горбунок');
+var fifthhorse = new CreateHorse('Т-34');
+firsthorse.runing(56);
+secondhorse.runing(45);
+thirdhorse.runing(77);
+fifthhorse.runing(120);
 
-console.log(mileageHerd);
+// console.log(mileageHerd);

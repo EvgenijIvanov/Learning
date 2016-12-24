@@ -1,25 +1,30 @@
 'use strict';
 
 function Horse(name){
-	this.name = name;
-	const continuousRunning = 10;
-	var mileage = 0;
+	this.name = name
 	this.fatigue = 0;
+	var containerName = this.name;
+	var continuousRunning = 10;
 	this.runing = function(mile){
-		this.fatigue = mile%continuousRunning;
-		var temp = (mile - mile%continuousRunning)/continuousRunning;
-					setTimeout(function(mile, temp){
-						var z = mile - 10;
-						temp--;
-						console.log("Лошадка пробежала " + (z*10) + " миль! Она устала!")
-					}.bind(this), 3000*i);
+		// debugger;
+		var counter = 0;
+		var oldfatigue = this.fatigue; 
+		var fatigue = mile%continuousRunning;
+		var halts = (mile - mile%continuousRunning)/continuousRunning;
+					setTimeout(function run(){
+							counter++;
+							console.log(containerName + " пробежала " + ((counter*continuousRunning) - oldfatigue) + " миль! И отдыхает в тени дуба");
+	 						if(counter < halts && oldfatigue+fatigue !== continuousRunning){
+	 							setTimeout(run, 3000)
+	 						} else if(fatigue !== 0){
+	 							console.log(containerName + " пробежала последнии " + (fatigue+oldfatigue) + " миль! И закусывает сеном");
+	 							fatigue = fatigue+oldfatigue;
+	 						} else {
+	 							console.log(containerName + " прибежала на место!");
+	 						}
+					}, 3000);
+			this.fatigue = fatigue;		
 	};
-	this.toRun = function(){
-		console.log(mileage);
-	};
-	this.allRun = function(){
-		console.log(this.constructor.prototype.mileageHerd);
-	}
 }
 
 
