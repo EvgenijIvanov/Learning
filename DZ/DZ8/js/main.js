@@ -6,24 +6,27 @@ function Horse(name){
 	var containerName = this.name;
 	var continuousRunning = 10;
 	this.runing = function(mile){
-		// debugger;
+		if(mile < continuousRunning && (mile+this.fatigue) < continuousRunning) {
+			this.fatigue = mile+this.fatigue;
+			return console.log(containerName + " пробежала " + (mile) + " миль! Прибежала на место!");
+			}
 		var counter = 0;
-		var oldfatigue = this.fatigue; 
+		var containerfatigue = this.fatigue; 
 		var fatigue = mile%continuousRunning;
+		this.fatigue = (fatigue+containerfatigue)%continuousRunning;
 		var halts = (mile - mile%continuousRunning)/continuousRunning;
+		if((containerfatigue + fatigue) > continuousRunning || (this.fatigue !== 0 && fatigue == 0)) halts++
 					setTimeout(function run(){
 							counter++;
-							console.log(containerName + " пробежала " + ((counter*continuousRunning) - oldfatigue) + " миль! И отдыхает в тени дуба");
-	 						if(counter < halts && oldfatigue+fatigue !== continuousRunning){
+							console.log(containerName + " пробежала " + ((counter*continuousRunning) - containerfatigue) + " миль! И отдыхает в тени дуба");
+	 						if(counter < halts && containerfatigue+fatigue !== continuousRunning){
 	 							setTimeout(run, 3000)
 	 						} else if(fatigue !== 0){
-	 							console.log(containerName + " пробежала последнии " + (fatigue+oldfatigue) + " миль! И закусывает сеном");
-	 							fatigue = fatigue+oldfatigue;
+	 							setTimeout(function() {console.log(containerName + " пробежала " + (mile) + " миль! Прибежала на место!");}, 3000)
 	 						} else {
 	 							console.log(containerName + " прибежала на место!");
 	 						}
 					}, 3000);
-			this.fatigue = fatigue;		
 	};
 }
 
