@@ -1,0 +1,8 @@
+.column{
+	width: 150px;
+	display: inline-block;
+}
+#batleFieldUser{
+	display: inline-block;
+	width: 400px;
+}

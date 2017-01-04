@@ -122,4 +122,4 @@ function Seabatle() {
 var seabatle = new Seabatle();
 seabatle.creatingField(10);
 // console.table(seabatle.battleField);
-seabatle.requestBuildingShip(3,3,4,1);
+// seabatle.requestBuildingShip(3,3,4,1);
