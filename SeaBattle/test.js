@@ -1,25 +1,41 @@
 'use strict';
 
 function Seabatle() {
-	this.messageError ="0 error!",
+	this.messageError ="Error!!! Смотри в браузер капитан!", //temp
 	this.creatingField = function(n){
+		var visibleField = document.querySelector("#batleFieldUser table tbody");
 		this.battleField = new Array(n);
 			for (var i = 0; i < n; i++){
 			this.battleField[i] = new Array(n)
 					for(var j = 0; j < n; j++){
-					this.battleField[i][j] = { ship: false,
+					this.battleField[i][j] = { 			ship: false,
 														shoot: false,
 														missed: false,
 														kill: false,
 														wound: false,
 														margin: false,
-														deck: 0}
+														deck: 0};
+						visibleField.children[i].children[j].setAttribute("onclick","seabatle.selectedField(this)");
 					}
 			}																		      // shipLenght - палубность корабля от 1 до 4
+	},
+	this.selectedField = function(obj){
+		obj.style.border="1px solid red";
+		this.dataBuildShip.x = obj.parentNode.rowIndex;
+		this.dataBuildShip.y = obj.cellIndex;
+		console.log(this.dataBuildShip);
+		console.dir(obj);
+	},
+	this.dataBuildShip = {
+		x: null,
+		y: null,
+		shipLenght: null,
+		direction: null
 	},																				     // x,y - начальные координаты для строительства корабля, 
 	this.requestBuildingShip = function(x,y,shipLenght,direction){   // direction - вектор направления: принимает значения '1' - вертикальный корабль, или "0" - горизонтальнный						
 		// debugger;
-		if (validationSize(x,y) && validationMargin(x,y,shipLenght,direction) && validationshipLenght(x,y,shipLenght,direction)) {	
+		
+		if (validationSize(x,y) && validationshipLenght(x,y,shipLenght,direction) && validationMargin(x,y,shipLenght,direction)) {	
 		 	buildingShip(x,y,shipLenght,direction);
 		} else {
 			console.log(this.messageError);
@@ -33,7 +49,20 @@ function Seabatle() {
 			} else{
 				console.log(this.messageError);
 			}
-	}
+	};
+		var switchDeck = document.querySelector(".switchDeck");
+			switchDeck.addEventListener("click", function (e) {
+    		console.log(e.type);
+			});
+		var errorTable = {
+				eroor01: 'Координаты за пределами поля боя!',
+				eroor02: 'Слишком близко к другому Вашему кораблю! Задайте другие координаты!',
+				eroor04: 'Ваш корабль вылазит за край мира! Он упадет! Задайте другие координаты! (ось Х)',
+				eroor05: 'Ваш корабль вылазит за край мира! Он упадет! Задайте другие координаты! (ось Y)',
+				eroor06: 'Задайте другую палубность! Не более 4 палуб!',
+				eroor07: 'Вы уже стреляли сюда!',
+				  msg01: 'Корабль готов!', 
+			};
 		var buildingShip = function (x,y,shipLenght,direction){
 			// debugger;
 			for(var i = (x-1); i <= (x + 1); i++ ){					// циклы для "построения" вокруг корабля "рамки" толщиной 1 квадрат
@@ -45,10 +74,11 @@ function Seabatle() {
 				}
 				this.shipLenght --;
 				this.battleField[x][y].ship = true;
+				document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "red";
 				this.battleField[x][y].deck = shipLenght;
 				if (this.shipLenght <= 0) {
-							 console.table(this.battleField);
-					return console.log('Корабль готов!');
+							 // console.table(this.battleField);
+					return document.querySelectorAll("#shipsLog p")[1].textContent = errorTable.msg01;
 				} else if(direction == 1){
 								buildingShip((x+1),y,shipLenght,direction);
 					} else {
@@ -58,24 +88,24 @@ function Seabatle() {
 		var validationSize = function  (x,y){
 		// debugger;
 		if (x > this.battleField.length || y > this.battleField.length) {
-			this.messageError = 'Координаты за пределами поля боя!';
+			document.querySelectorAll("#shipsLog p")[1].textContent = errorTable.eroor01;
 			return false;
 		} else {
 			return true;
 		}
 	}.bind(this);
 	 	var validationMargin = function  (x,y,shipLenght,direction){
-		 // debugger;
+		 	// debugger;
 			if(direction == 1){
-				if (this.battleField[x][y].margin == true || this.battleField[x+shipLenght-1][y].margin == true) {
-				this.messageError = 'Слишком близко к другому Вашему кораблю! Задайте другие координаты!';
+				if (this.battleField[x][y].margin == true || this.battleField[x+(shipLenght-1)][y].margin == true) {
+				document.querySelectorAll("#shipsLog p")[1].textContent = errorTable.eroor02;
 				return false;
 			} else {
 				return true;
 			}
-			}else{
-				if (this.battleField[x][y].margin == true || this.battleField[x][y+shipLenght-1].margin == true) {
-				this.messageError = 'Слишком близко к другому Вашему кораблю! Задайте другие координаты!';
+			}else if (direction == 0){
+				if (this.battleField[x][y].margin == true || this.battleField[x][y+(shipLenght-1)].margin == true) {
+				document.querySelectorAll("#shipsLog p")[1].textContent = errorTable.eroor02;
 				return false;
 			} else {
 				return true;
@@ -90,7 +120,7 @@ function Seabatle() {
 					this.shipLenght = shipLenght;
 					return true;
 				} else {
-					this.messageError = 'Ваш корабль вылазит за край мира! Он упадет! Задайте другие координаты! (ось Х)';
+					document.querySelectorAll("#shipsLog p")[1].textContent = errorTable.eroor04;
 					return false;
 				}
 			} else if (direction == 0){
@@ -98,12 +128,12 @@ function Seabatle() {
 					this.shipLenght = shipLenght;
 					return true;
 				}else {
-					this.messageError = 'Ваш корабль вылазит за край мира! Он упадет! Задайте другие координаты! (ось Y)';
+					document.querySelectorAll("#shipsLog p")[1].textContent = errorTable.eroor05;
 					return false;
 						}
 			} 
 		} else {
-			this.messageError = 'Задайте другую палубность! Не более 4 палуб!';
+			document.querySelectorAll("#shipsLog p")[1].textContent = errorTable.eroor06;
 			return false;
 		}
 	}.bind(this);
@@ -111,7 +141,7 @@ function Seabatle() {
 			if (this.battleField[x][y].shoot !== true){
 				return true;
 			} else{
-				this.messageError = 'Вы уже стреляли сюда!';
+				document.querySelectorAll("#shipsLog p")[1].textContent = errorTable.eroor07;
 				return false;
 			}
 	}.bind(this);
@@ -119,7 +149,6 @@ function Seabatle() {
 
 	}.bind(this)
 }	
-var seabatle = new Seabatle();
-seabatle.creatingField(10);
-// console.table(seabatle.battleField);
+//var seabatle = new Seabatle();
+//seabatle.creatingField(10);
 // seabatle.requestBuildingShip(3,3,4,1);
