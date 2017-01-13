@@ -15,16 +15,23 @@ function Seabatle() {
 														wound: false,
 														margin: false,
 														deck: 0};
-						visibleField.children[i].children[j].setAttribute("onclick","seabatle.selectedField(this)");
-					}
-			}																		      // shipLenght - палубность корабля от 1 до 4
+						visibleField.children[i].children[j].setAttribute("class","field");
+					};
+			};
+																			      // shipLenght - палубность корабля от 1 до 4
 	},
-	this.selectedField = function(obj){
-		obj.style.border="1px solid red";
-		this.dataBuildShip.x = obj.parentNode.rowIndex;
-		this.dataBuildShip.y = obj.cellIndex;
-		console.log(this.dataBuildShip);
-		console.dir(obj);
+	this.tempFunction = function(){
+		var field = document.querySelectorAll(".field");
+			console.log(field);
+			// field.addEventListener("click", activedField);
+		function activedField (e){
+    			console.log('test!');
+			};
+		// obj.style.border="1px solid red";
+		// this.dataBuildShip.x = obj.parentNode.rowIndex;
+		// this.dataBuildShip.y = obj.cellIndex;
+		// console.log(this.dataBuildShip);
+		// console.dir(obj);
 	},
 	this.dataBuildShip = {
 		x: null,
@@ -49,7 +56,7 @@ function Seabatle() {
 			} else{
 				console.log(this.messageError);
 			}
-	};
+			};
 		var switchDeck = document.querySelector(".switchDeck");
 			switchDeck.addEventListener("click", function (e) {
     		console.log(e.type);
