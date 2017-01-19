@@ -1,0 +1,7 @@
+.indicator{
+	position: absolute;
+}
+.listSweets{
+	display: inline;
+	cursor: pointer;
+}

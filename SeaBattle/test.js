@@ -17,7 +17,7 @@ function Seabatle() {
 			};
 	};
 	var self = this;
-	var random = true;
+	var random = false;
 	var messageError = "Error!!! Смотри в браузер капитан!"; //temp
 	var shipLog = document.querySelectorAll("#shipsLog p")[1];
 	var requestBuildingShip = function(){
@@ -107,7 +107,7 @@ function Seabatle() {
 			};
 		var errorTable = {
 				eroor01: 'Координаты за пределами поля боя!',
-				eroor02: 'Слишком близко к другому Вашему кораблю! Задайте другие координаты!',
+				eroor02: 'Слишком близко к другому Вашему кораблю! Выберите другое расположение!',
 				eroor03: 'Выберите палубность корабля!',
 				eroor04: 'Ваш корабль вылазит за край мира! Он упадет! Задайте другие координаты! (ось Х)',
 				eroor05: 'Ваш корабль вылазит за край мира! Он упадет! Задайте другие координаты! (ось Y)',

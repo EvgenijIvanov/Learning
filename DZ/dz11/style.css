@@ -1,0 +1,12 @@
+body{
+	position: relative;
+}
+td{
+	font-size: 14px;
+	text-align: center;
+	font-weight: bold;
+	color: black;
+	width: 30px;
+	height: 30px;
+	border: 1px solid black;
+	}
