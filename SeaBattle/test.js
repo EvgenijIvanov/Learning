@@ -1,56 +1,92 @@
 'use strict';
 
 function Seabatle() {
+	var batleFieldUser = document.querySelector('#batleFieldUser');
+	var batleFieldComp = document.querySelector('#batleFieldComp');
 	this.creatingField = function(n){
+		var usertable = document.createElement('table');
+		var tbody = document.createElement('tbody');
 		this.battleField = new Array(n);
 		for (var i = 0; i < n; i++){
+			var tr = document.createElement('tr');
 			this.battleField[i] = new Array(n)
 				for(var j = 0; j < n; j++){
-	    			this.battleField[i][j] = { 		ship: false,
+					var td = document.createElement('td');
+					tr.appendChild(td);
+	    			this.battleField[i][j] = { 		
+	    										user: {
+	    											ship: false,
 													shoot: false,
 													missed: false,
 													kill: false,
 													wound: false,
 													margin: false,
-													deck: 0};
+													deck: 0
+	    											},
+	    										enemy: {
+	    											ship: false,
+													shoot: false,
+													missed: false,
+													kill: false,
+													wound: false,
+													margin: false,
+													deck: 0
+	    											}
+												};
 					};
+					tbody.appendChild(tr);
 			};
+			usertable.appendChild(tbody);
+			batleFieldUser.appendChild(usertable);
+			var compTable = usertable.cloneNode(true)
+			batleFieldComp.appendChild(compTable);
 	};
 	var self = this;
 	var random = false;
+	var master = "user";
+	var countLenght = 0;
+	var curentTime = Date();
 	var messageError = "Error!!! Смотри в браузер капитан!"; //temp
-	var shipLog = document.querySelectorAll("#shipsLog p")[1];
+
+	var shipLog = document.querySelector("#shipsLog");
+	var loged = function(messagetext){
+		var shipLogNode = document.createElement("p");
+		var shiplogTime = document.createElement("span");
+		var shipLogText = document.createTextNode(messagetext);
+		shipLogNode.appendChild(shipLogText);
+		shipLog.appendChild(shipLogNode);
+	};
 	var requestBuildingShip = function(){
 		var x = dataBuildShip.x;
 		var y = dataBuildShip.y;
 		var shipLenght = dataBuildShip.shipLenght;
 		var direction = dataBuildShip.direction;
-		if (validationSize(x,y) && validationshipLenght(x,y,shipLenght,direction) && validationMargin(x,y,shipLenght,direction) 
-			&& validationFlotship()) {	
+		if (validationshipLenght(x,y,shipLenght,direction) && validationMargin(x,y,shipLenght,direction) 
+			&& validationPortship()) {	
 		 	buildingShip(x,y,shipLenght,direction);
-		 	if (random && (flot.ship1 + flot.ship2 + flot.ship3 + flot.ship4) != 0) {
-		 		testing();
+		 	if (random == true && (port.ship1 + port.ship2 + port.ship3 + port.ship4) != 0) {
+		 		automating();
 		 	};
 		} else if (random) {
-			testing();
+			automating();
 		} else{
 			console.log(messageError);			
 		}
 	};
-	var shootToShip = function(x,y){
-			if (validationSize(x,y) && validationFieldShoot(x,y)){
-								console.log('Бабах мазафака!')
-					console.table(this.battleField);
-			} else{
-				console.log(messageError);
-			}
-			}.bind(this);
+	// var shootToShip = function(x,y){
+	// 		if (validationFieldShoot(x,y)){
+	// 							console.log('Бабах мазафака!')
+	// 				console.table(this.battleField);
+	// 		} else{
+	// 			console.log(messageError);
+	// 		}
+	// 		}.bind(this);
 		var batleFieldUser = document.querySelector("#batleFieldUser");
 			batleFieldUser.addEventListener("click", activedField);
 		function activedField (e){
 			if(e.target.nodeName == "TD"){
-				var random = false;
-				if(!dataBuildShip.shipLenght) return shipLog.textContent = errorTable.eroor03;	
+				if(!dataBuildShip.shipLenght) return loged("eroor03");	
+    			master = "user";
     			dataBuildShip.x = e.target.parentNode.rowIndex;
 				dataBuildShip.y = e.target.cellIndex;
 				requestBuildingShip();
@@ -62,7 +98,7 @@ function Seabatle() {
 				shipLenght: null,
 				direction: 1
 			};
-		var flot = {
+		var port = {
 				ship4: 1,
 				ship3: 2,
 				ship2: 3,
@@ -88,43 +124,69 @@ function Seabatle() {
 				};
 			};
 		var clearAll = document.querySelector(".clear-all");
-			clearAll.addEventListener("click", activedClearAll)
-			function activedClearAll(e){
-				// debugger;
+			clearAll.addEventListener("click", function(e){
 				if(e.target.nodeName != "BUTTON") return;
+				activedClearAll();
+			})
+		var activedClearAll = function (){
+			var owner = validationMaster();
 				for (var i = 0; i < 10; i++) {
 					for (var j = 0; j < 10; j++) {
-						self.battleField[i][j].ship = false;
-						self.battleField[i][j].margin = false;
-						self.battleField[i][j].desk = false;
-						flot.ship4 = 1;
-						flot.ship3 = 2;
-						flot.ship2 = 3;
-						flot.ship1 = 4;
-						document.querySelector("#batleFieldUser table tbody").children[i].children[j].style.background = "";
+						self.battleField[i][j][owner].ship = false;
+						self.battleField[i][j][owner].margin = false;
+						self.battleField[i][j][owner].desk = false;
+						port.ship4 = 1;
+						port.ship3 = 2;
+						port.ship2 = 3;
+						port.ship1 = 4;
+						if(owner == "user") document.querySelector("#batleFieldUser table tbody").children[i].children[j].style.background = "";
+						if(owner == "enemy") document.querySelector("#batleFieldComp table tbody").children[i].children[j].style.background = "";
 					};
 				};
 			};
 		var errorTable = {
-				eroor01: 'Координаты за пределами поля боя!',
 				eroor02: 'Слишком близко к другому Вашему кораблю! Выберите другое расположение!',
 				eroor03: 'Выберите палубность корабля!',
 				eroor04: 'Ваш корабль вылазит за край мира! Он упадет! Задайте другие координаты! (ось Х)',
 				eroor05: 'Ваш корабль вылазит за край мира! Он упадет! Задайте другие координаты! (ось Y)',
-				eroor06: 'Задайте другую палубность! Не более 4 палуб!',
 				eroor07: 'Вы уже стреляли сюда!',
 				eroor08: 'Вы установили максимум кораблей данной палубности!',
 				  msg01: 'Корабль готов!', 
 			};
-		var test = document.querySelector(".test");
-			test.addEventListener("click", function(){testing();})
-		var testing = function (){
+		var manual = document.querySelector(".manual");
+		var manualData = document.querySelector(".column");
+			manualData.style.display = "none";
+			manual.addEventListener("click", function(){
+			random = false;
+			activedClearAll();
+			manualData.style.display = "block";	
+			});
+		var automatic = document.querySelector(".automatic");
+			automatic.addEventListener("click", function(){
+				master = "user";
+				manualData.style.display = "none";
+				activedClearAll();
+				automating();
+			})
+		var automating = function (){
+				random = true;
 				dataBuildShip.x = numbersGeneration(0, 9);
 				dataBuildShip.y = numbersGeneration(0, 9);
 				dataBuildShip.shipLenght = numbersGeneration(1, 4);
 				dataBuildShip.direction	= numbersGeneration(0, 1);
 				requestBuildingShip();
 			};
+		var enemyBuild = function(){
+				master = "enemy";
+				activedClearAll();
+				automating();
+				return true;
+		};
+		var startBattle = document.querySelector(".startbattle");
+			startBattle.addEventListener("click", function(){
+				enemyBuild();
+				batleFieldComp.addEventListener("click", shootout);
+			});
 		var numbersGeneration = function (min, max) {
     			var rand = min + Math.random() * (max + 1 - min);
     			rand = Math.floor(rand);
@@ -132,47 +194,48 @@ function Seabatle() {
   			}	
 		var buildingShip = function (x,y,shipLenght,direction){
 			// debugger;
+			var owner = validationMaster();
 			for(var i = (x-1); i <= (x + 1); i++ ){					// циклы для "построения" вокруг корабля "рамки" толщиной 1 квадрат
 					if(i < 0 || i > this.battleField.length - 1) continue;
 						for(var j = (y-1); j <= (y+1); j++){
 							if(j < 0 || j > this.battleField.length - 1) continue;
-									this.battleField[i][j].margin = true;
+									this.battleField[i][j][owner].margin = true;
 								}
 				}
-				this.shipLenght --;
-				this.battleField[x][y].ship = true;
-				document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "green";
-				this.battleField[x][y].deck = shipLenght;
-				if (this.shipLenght <= 0) {
-							 // console.table(this.battleField);
-					return shipLog.textContent = errorTable.msg01;
+				countLenght --;
+				this.battleField[x][y][owner].ship = true;
+				if(master == "user") document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "green";
+				// if(master == "enemy") document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "blue";
+				this.battleField[x][y][owner].deck = shipLenght;
+				if (countLenght <= 0) {
+					loged(errorTable.msg01);
+					return;
 				} else if(direction == 1){
-								buildingShip((x+1),y,shipLenght,direction);
+								buildingShip((x+1),y,shipLenght,direction,master);
 					} else {
-								buildingShip(x,(y+1),shipLenght,direction);
+								buildingShip(x,(y+1),shipLenght,direction,master);
 					}
-	}.bind(this);
-		var validationSize = function  (x,y){
-		// debugger;
-		if (x > this.battleField.length || y > this.battleField.length) {
-			shipLog.textContent = errorTable.eroor01;
-			return false;
-		} else {
-			return true;
-		}
-	}.bind(this);
+		}.bind(this);
+		var validationMaster = function(){
+			if(master == "user"){
+				return "user";
+			}else if(master == "enemy"){
+				return "enemy";
+			};
+		};
 	 	var validationMargin = function  (x,y,shipLenght,direction){
 		 	// debugger;
+		 	var owner = validationMaster();
 			if(direction == 1){
-				if (this.battleField[x][y].margin == true || this.battleField[x+(shipLenght-1)][y].margin == true) {
-				shipLog.textContent = errorTable.eroor02;
+				if (this.battleField[x][y][owner].margin == true || this.battleField[x+(shipLenght-1)][y][owner].margin == true) {
+				loged(errorTable.eroor02);
 				return false;
 			} else {
 				return true;
 			}
 			}else if (direction == 0){
-				if (this.battleField[x][y].margin == true || this.battleField[x][y+(shipLenght-1)].margin == true) {
-				shipLog.textContent = errorTable.eroor02;
+				if (this.battleField[x][y][owner].margin == true || this.battleField[x][y+(shipLenght-1)][owner].margin == true) {
+				loged(errorTable.eroor02);
 				return false;
 			} else {
 				return true;
@@ -181,66 +244,140 @@ function Seabatle() {
 	}.bind(this);
 	 	var validationshipLenght = function (x,y,shipLenght,direction){
 			// debugger;
-		if(shipLenght >= 1 && shipLenght <= 4){
 			if(direction == 1){
 				if((x+shipLenght) <= this.battleField.length) {
-					this.shipLenght = shipLenght;
+					countLenght = shipLenght;
 					return true;
 				} else {
-					shipLog.textContent = errorTable.eroor04;
+					loged(errorTable.eroor04);
 					return false;
 				}
 			} else if (direction == 0){
 				if((y+shipLenght) <= this.battleField.length){
-					this.shipLenght = shipLenght;
+					countLenght = shipLenght;
 					return true;
 				}else {
-					shipLog.textContent = errorTable.eroor05;
+					loged(errorTable.eroor05);
 					return false;
 						}
 			} 
-		} else {
-			shipLog.textContent = errorTable.eroor06;
-			return false;
-		}
 	}.bind(this);
 	var validationFieldShoot = function(x,y){
-			if (this.battleField[x][y].shoot !== true){
+		var owner = validationMaster();
+			if (this.battleField[x][y][owner].shoot !== true){
 				return true;
 			} else{
-				shipLog.textContent = errorTable.eroor07;
+				loged(errorTable.eroor07);
 				return false;
 			}
 	}.bind(this);
-	var validationFlotship = function(){
+	var validationSonar = function(){
+		var owner = validationMaster();
+			for (var i = 0; i > this.battleField.length - 1; i++) {
+				for (var j = 0; j > this.battleField.length - 1; j--) {
+					if (this.battleField[i][j][owner].ship == true){
+						return true;
+					} else if (i == this.battleField.length - 1 && j == this.battleField.length - 1){
+						console.log('Кораблей больше нет!')
+						return false
+					}	
+				}
+			}
+	}.bind(this);
+	var validationPortship = function(){
 		switch (dataBuildShip.shipLenght){
-					case 1: flot.ship1--;
-					if(flot.ship1 < 0){
-						shipLog.textContent = errorTable.eroor08;
-						flot.ship1 = 0;
+					case 1: port.ship1--;
+					if(port.ship1 < 0){
+						loged(errorTable.eroor08);
+						port.ship1 = 0;
 						return false
 						} else return true;
-					case 2: flot.ship2--;
-					if(flot.ship2 < 0) {
-						shipLog.textContent = errorTable.eroor08;
-						flot.ship2 = 0;
+					case 2: port.ship2--;
+					if(port.ship2 < 0) {
+						loged(errorTable.eroor08);
+						port.ship2 = 0;
 						return false
 						} else return true;
-					case 3: flot.ship3--; 
-					if(flot.ship3 < 0){
-						shipLog.textContent = errorTable.eroor08;
-						flot.ship3 = 0;
+					case 3: port.ship3--; 
+					if(port.ship3 < 0){
+						loged(errorTable.eroor08);
+						port.ship3 = 0;
 						return false
 						} else return true;
-					case 4: flot.ship4--; 
-					if(flot.ship4 < 0){
-						shipLog.textContent = errorTable.eroor08;
-						flot.ship4 = 0;
+					case 4: port.ship4--; 
+					if(port.ship4 < 0){
+						loged(errorTable.eroor08);
+						port.ship4 = 0;
 						return false
 						} else return true;
 				}
-	}.bind(this)
-}	
+	};
+	var shootout = function(e){
+		if(e.target.nodeName != "TD") return false;
+			var x = e.target.parentNode.rowIndex;
+			var y = e.target.cellIndex;
+			master = "enemy";
+			console.log("x = ", x, "y = ", y);
+			if (validationFieldShoot(x,y)) killingShip(x,y);
+	};
+	var killingShip = function(x,y){
+		var owner = validationMaster();
+		this.battleField[x][y][owner].shoot = true;
+		if (this.battleField[x][y][owner].ship == true){
+			this.battleField[x][y][owner].ship = false;
+			if(this.battleField[x][y][owner].deck == 1){
+				this.battleField[x][y][owner].kill = true;
+					if(owner != "user")document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "red";
+					if(owner != "enemy") document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "red";
+					if(validationSonar() != true) return;
+					if(owner != "enemy") automatingShot();
+			} else {
+				this.battleField[x][y][owner].wound = true;
+					// if(validationSonar() != true) return;
+					if(owner != "user")document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "yellow";
+					if(owner != "enemy") document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "yellow";
+					if(owner != "enemy") automatingShot();
+				}
+			} else {
+				this.battleField[x][y][owner].missed = true;
+				if(owner != "user")document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "grey";
+				if(owner != "enemy") document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "grey";
+				if(owner != "user") automatingShot();
+			}	
+	}.bind(this); 
+	var automatingShot = function(){
+		master = "user";
+		var x = numbersGeneration(0, 9);
+		var y = numbersGeneration(0, 9);
+		if (validationFieldShoot(x,y) && validationShotMargin (x,y)) {
+			killingShip(x,y);
+		} else automatingShot();
+	};
+	var validationShotMargin = function(x,y){
+		var owner = validationMaster();
+			for(var i = (x-1); i <= (x + 1); i++ ){					// циклы для "построения" вокруг корабля "рамки" толщиной 1 квадрат
+					if(i < 0 || i > this.battleField.length - 1) continue;
+						for(var j = (y-1); j <= (y+1); j++){
+							if(j < 0 || j > this.battleField.length - 1) continue;
+									if(this.battleField[i][j][owner].kill == true){
+										return false;
+									} else return true;
+								}
+				}	
+	}.bind(this);
+	var lastWounded = {
+		lastX: undefined,
+		lastY: undefined,
+		lastDesk: undefined
+	}
+	var coordinatesRebound = function(){
+		var x = numbersGeneration(lastWounded.lastX-1, lastWounded.lastX+1)
+		var y = numbersGeneration(lastWounded.lastY-1, lastWounded.lastX+1)
+	}
+	var validationRebound = function(){
+		
+	}
+}
 var seabatle = new Seabatle();
 seabatle.creatingField(10);
-// seabatle.requestBuildingShip(3,3,4,1);
+// seabatle.battleField

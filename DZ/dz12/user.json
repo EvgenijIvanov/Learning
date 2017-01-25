@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Viktor",
+    "sename": "Restob",
+    "age": 17,
+    "position": "junior"
+  },
+  {
+    "name": "Alex",
+    "sename": "Shmalex",
+    "age": 33,
+    "position": "middle"
+  },
+  {
+    "name": "Semen",
+    "sename": "Pelmen",
+    "age": 47,
+    "position": "senior"
+
+  },
+  {
+    "name": "Sergey",
+    "sename": "Sergeev",
+    "age": 87,
+    "position": "ded"
+  },
+  {
+    "name": "Stiven",
+    "sename": "Gerard",
+    "age": 35,
+    "position": "cap"
+  }
+]

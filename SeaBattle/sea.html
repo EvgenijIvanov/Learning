@@ -2,11 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <!-- <script type="text/javascript" src="test.js"></script> -->
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="test.js" defer></script>
     <title>SeaBatle</title>
 </head>
 <body>
+<div class="controlPanel">
+<div class="manual">
+	<button>Ручная растановка</button>
+</div>
 <div class=column>
 	<div class="port">
 		<form action="" name="formPaluba">
@@ -20,145 +24,24 @@
 		</form>
 	</div>
 	<div class="direction">
-		<form action="" name="formDirection">
-			<p><input type="checkbox" name="" placeholder="" value=""><span>Вертикальный</span></p>
-		</form>
+			<form action="" name="formDirection">
+				<p><input type="checkbox" name="" placeholder="" value=""><span>Вертикальный</span></p>
+			</form>
+		<div class="clear-all"><button>Очистить все поля!</button></div>
 	</div>
-	<div class="clear-all"><button>Очистить все поля!</button></div>
-	<div class="test">
-		<button>Авторастановка</button>
-	</div>
-</div>		
-	<div id="batleFieldUser">
-	<table align="center" border="1" width="360px" height="360px">
-		<tbody>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-		</tbody>
-	</table>
-	</div>
-	<div id=shipsLog>
-		<p>Корабельный Журнал:</p>
-		<p></p>
-	</div>
+</div>
+<div class="automatic">
+	<button>Авторастановка</button>
+</div>
+<div class="startbattle">
+	<button>Начать бой!</button>
+</div>
+</div>
+<div id="batleFieldUser"></div>
+<div id="batleFieldComp"></div>
+<div id=shipsLog>
+	<p>Корабельный Журнал:</p>
+</div>
 </body>
-<script type="text/javascript" src="test.js"></script>
+<!-- <script type="text/javascript" src="test.js" defer></script> -->
 </html>
