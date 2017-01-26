@@ -78,7 +78,7 @@ function Seabatle() {
 		function activedField (e){
 			if(e.target.nodeName == "TD"){
 				if(!dataBuildShip.shipLenght) return loged("eroor03");	
-    			master = "user";
+    			target = "user";
     			dataBuildShip.x = e.target.parentNode.rowIndex;
 				dataBuildShip.y = e.target.cellIndex;
 				requestBuildingShip();
@@ -413,4 +413,3 @@ function Seabatle() {
 }
 var seabatle = new Seabatle();
 seabatle.creatingField(10);
-// seabatle.battleField
