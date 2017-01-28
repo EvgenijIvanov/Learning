@@ -18,16 +18,16 @@
 	margin: 0;
 	padding: 0;
 }
-#shipsLog p:nth-child(2){
-	margin: 30px 0 0;
-}
-#shipsLog p:first-child{
-	background: #FFF;
-	position: fixed;
-	width: 100%;
-	font-size: 25px;
-	text-align: center;
-}
+/*#shipsLog p:nth-child(2){*/
+	/*margin: 30px 0 0;*/
+/*}*/
+/*#shipsLog p:first-child{*/
+	/*background: #FFF;*/
+	/*position: fixed;*/
+	/*width: 100%;*/
+	/*font-size: 25px;*/
+	/*text-align: center;*/
+/*}*/
 td{
 	width: 30px;
 	height: 30px;
