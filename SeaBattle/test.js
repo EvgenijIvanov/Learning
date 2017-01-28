@@ -14,32 +14,32 @@ function Seabatle() {
 					var td = document.createElement('td');
 					tr.appendChild(td);
 	    			this.battleField[i][j] = { 		
-	    										user: {
-	    											ship: false,
-													shoot: false,
-													missed: false,
-													kill: false,
-													wound: false,
-													margin: false,
-													deck: 0
-	    											},
-	    										enemy: {
-	    											ship: false,
-													shoot: false,
-													missed: false,
-													kill: false,
-													wound: false,
-													margin: false,
-													deck: 0
-	    											}
-												};
+						user: {
+							ship: false,
+							shoot: false,
+							missed: false,
+							kill: false,
+							wound: false,
+							margin: false,
+							deck: 0
+	    					},
+	    				enemy: {
+	    					ship: false,
+							shoot: false,
+							missed: false,
+							kill: false,
+							wound: false,
+							margin: false,
+							deck: 0
+						}
 					};
-					tbody.appendChild(tr);
-			};
-			usertable.appendChild(tbody);
-			batleFieldUser.appendChild(usertable);
-			var compTable = usertable.cloneNode(true)
-			batleFieldComp.appendChild(compTable);
+				};
+			tbody.appendChild(tr);
+		};
+		usertable.appendChild(tbody);
+		batleFieldUser.appendChild(usertable);
+		var compTable = usertable.cloneNode(true)
+		batleFieldComp.appendChild(compTable);
 	};
 	var self = this;
 	var random = false;
@@ -160,18 +160,18 @@ function Seabatle() {
 				automating();
 			})
 		var automating = function (){
-				random = true;
-				dataBuildShip.x = numbersGeneration(0, 9);
-				dataBuildShip.y = numbersGeneration(0, 9);
-				dataBuildShip.shipLenght = numbersGeneration(1, 4);
-				dataBuildShip.direction	= numbersGeneration(0, 1);
-				requestBuildingShip();
+			random = true;
+			dataBuildShip.x = numbersGeneration(0, 9);
+			dataBuildShip.y = numbersGeneration(0, 9);
+			dataBuildShip.shipLenght = numbersGeneration(1, 4);
+			dataBuildShip.direction	= numbersGeneration(0, 1);
+			requestBuildingShip();
 			};
 		var enemyBuild = function(){
-				target = "enemy";
-				activedClearAll();
-				automating();
-				return true;
+			target = "enemy";
+			activedClearAll();
+			automating();
+			return true;
 		};
 		var startBattle = document.querySelector(".startbattle");
 			startBattle.addEventListener("click", function(){
@@ -179,32 +179,32 @@ function Seabatle() {
 				batleFieldComp.addEventListener("click", shootout);
 			});
 		var numbersGeneration = function (min, max) {
-    			var rand = min + Math.random() * (max + 1 - min);
-    			rand = Math.floor(rand);
-    			return rand;
+			var rand = min + Math.random() * (max + 1 - min);
+			rand = Math.floor(rand);
+			return rand;
   			}	
 		var buildingShip = function (x,y,shipLenght,direction){
 			// debugger;
 			for(var i = (x-1); i <= (x + 1); i++ ){					// циклы для "построения" вокруг корабля "рамки" толщиной 1 квадрат
-					if(i < 0 || i > this.battleField.length - 1) continue;
-						for(var j = (y-1); j <= (y+1); j++){
-							if(j < 0 || j > this.battleField.length - 1) continue;
-									this.battleField[i][j][target].margin = true;
-								}
+				if(i < 0 || i > this.battleField.length - 1) continue;
+				for(var j = (y-1); j <= (y+1); j++){
+					if(j < 0 || j > this.battleField.length - 1) continue;
+					this.battleField[i][j][target].margin = true;
 				}
-				countLenght --;
-				this.battleField[x][y][target].ship = true;
-				if(target == "user") document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "green";
-				// if(master == "enemy") document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "blue";
-				this.battleField[x][y][target].deck = shipLenght;
-				if (countLenght <= 0) {
-					loged(errorTable.msg01);
-					return;
-				} else if(direction == 1){
-								buildingShip((x+1),y,shipLenght,direction);
-					} else {
-								buildingShip(x,(y+1),shipLenght,direction);
-					}
+			}
+			countLenght --;
+			this.battleField[x][y][target].ship = true;
+			if(target == "user") document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "green";
+			// if(master == "enemy") document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "blue";
+			this.battleField[x][y][target].deck = shipLenght;
+			if (countLenght <= 0) {
+				loged(errorTable.msg01);
+				return;
+			} else if(direction == 1){
+				buildingShip((x+1),y,shipLenght,direction);
+			} else {
+				buildingShip(x,(y+1),shipLenght,direction);
+			}
 		}.bind(this);
 	 	var validationMargin = function  (x,y,shipLenght,direction){
 		 	// debugger;
@@ -212,7 +212,7 @@ function Seabatle() {
 				if (this.battleField[x][y][target].margin == true || this.battleField[x+(shipLenght-1)][y][target].margin == true) {
 				loged(errorTable.eroor02);
 				return false;
-			} else {
+				} else {
 				return true;
 			}
 			}else if (direction == 0){
