@@ -415,7 +415,7 @@ function Seabatle() {
 		var deathReturn = 0;
 		var doubleKill = 0;
 		for(var i = (shipWounded.firstX-1); i <= (shipWounded.firstX + 1); i++ ){
-			if(i < 0 || i > this.battleField.length - 1) continue;										// циклы для "построения" вокруг корабля "рамки" толщиной 1 квадрат
+			if(i < 0 || i > this.battleField.length - 1) continue;
 			for(var j = (shipWounded.firstY-1); j <= (shipWounded.firstY+1); j++){
 				if(j < 0 || j > this.battleField.length - 1) continue;
 				if(i == shipWounded.firstX && j == shipWounded.firstY) continue;
