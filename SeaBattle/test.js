@@ -295,14 +295,17 @@ function Seabatle() {
 			this.battleField[x][y][target].ship = false;
 			this.battleField[x][y][target].kill = true;
 			if(this.battleField[x][y][target].deck == 1){
-					if(target == "enemy")document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "red";
+					if(target == "enemy"){
+						validationSonar();
+						document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "red";}
 					if(target == "user"){
 						if(shipWounded.woundedCount != 0) document.querySelector("#batleFieldUser table tbody").children[shipWounded.lastX].children[shipWounded.lastY].style.background = "red";
 						document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "red";
 						shipWounded.woundedCount = 0;
 						shipWounded.deck = undefined;
-						automatingShot();
+						if(validationSonar())automatingShot();
 					}
+
 			} else {
 				this.battleField[x][y][target].wound = true;
 					// if(validationSonar() != true) return;
@@ -340,6 +343,8 @@ function Seabatle() {
 		target = "user";
 		var x = numbersGeneration(0, 9);
 		var y = numbersGeneration(0, 9);
+		shipWounded.firstX =x;
+		shipWounded.firstY =y;
 		if (validationFieldShoot(x,y) && validationShotMargin (x,y)) {
 			killingShip(x,y);
 			return -1;
@@ -360,6 +365,8 @@ function Seabatle() {
 		}	
 	}.bind(this);
 	var shipWounded = {
+		firstX: undefined,
+		firstY: undefined,
 		lastX: undefined,
 		lastY: undefined,
 		deck: undefined,
@@ -387,9 +394,12 @@ function Seabatle() {
 			this.battleField[shipWounded.shootX][shipWounded.shootY][target].deck = shipWounded.deck;
 			killingShip(shipWounded.shootX,shipWounded.shootY);
 			return -1;
+		} else if (totalDestruction()){
+			this.battleField[shipWounded.shootX][shipWounded.shootY][target].deck = shipWounded.deck;
+			killingShip(shipWounded.shootX,shipWounded.shootY);
+			return -1;
 		} else {
 			coordinatesRebound();
-			return -1;
 		}
 	}.bind(this);
 	var validationFieldRebound = function(x,y){
@@ -400,16 +410,51 @@ function Seabatle() {
 			return false
 		};
 	}.bind(this);
-	var tempcountship = 0
+	var totalDestruction = function(){
+		// debugger;
+		var deathReturn = 0;
+		var doubleKill = 0;
+		for(var i = (shipWounded.firstX-1); i <= (shipWounded.firstX + 1); i++ ){
+			if(i < 0 || i > this.battleField.length - 1) continue;										// циклы для "построения" вокруг корабля "рамки" толщиной 1 квадрат
+			for(var j = (shipWounded.firstY-1); j <= (shipWounded.firstY+1); j++){
+				if(j < 0 || j > this.battleField.length - 1) continue;
+				if(i == shipWounded.firstX && j == shipWounded.firstY) continue;
+				if(this.battleField[i][j][target].kill === true){
+					deathReturn++
+				}
+				if(this.battleField[i][j][target].ship === true){
+					shipWounded.shootX = i;
+					shipWounded.shootY = j;
+					doubleKill++;
+				}
+			}
+		}
+		if(deathReturn == 1 && doubleKill == 1){
+			return true;
+		} else {
+			return false;
+		}
+	}.bind(this);
 	var validationSonar = function(){
+		var countAllShip = 0;
 			for (var i = 0; i <= this.battleField.length - 1; i++) {
 				for (var j = 0; j <= this.battleField.length - 1; j++) {
 					if (this.battleField[i][j][target].ship == true){
-						tempcountship = tempcountship + 1;
-					} 
-				}	
+						countAllShip++
+						return true;
+					}
+				}
 			}
-	};
+		if(countAllShip <= 0 && target == "user"){
+			console.log("Юзверь проиграл!");
+			activedClearAll();
+			return false;
+		} else if(countAllShip <= 0 && target == "enemy"){
+			console.log("Comp проиграл!");
+			activedClearAll();
+			return false;
+		}
+	}.bind(this);
 }
 var seabatle = new Seabatle();
 seabatle.creatingField(10);
