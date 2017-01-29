@@ -12,26 +12,29 @@
 	width: 100%;
 	height: 340px;
 	border: 1px solid green;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 #shipsLog p{
 	margin: 0;
 	padding: 0;
 }
-/*#shipsLog p:nth-child(2){*/
-	/*margin: 30px 0 0;*/
-/*}*/
-/*#shipsLog p:first-child{*/
-	/*background: #FFF;*/
-	/*position: fixed;*/
-	/*width: 100%;*/
-	/*font-size: 25px;*/
-	/*text-align: center;*/
-/*}*/
 td{
 	width: 30px;
 	height: 30px;
 	border: 1px solid black;
+}
+.tdUserShip{
+	background-color: green;
+}
+.tdWoundShip{
+	background-color: yellow;
+}
+.tdKillShip{
+	background-color: red;
+}
+.tdMissedShip{
+	background-color: grey
 }
 button{
 	width: 150px;

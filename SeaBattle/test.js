@@ -2,9 +2,10 @@
 
 function Seabatle() {
 	var self = this;
+	const WAR_SIZE = 10;
 	var batleFieldUser = document.querySelector('#batleFieldUser');
 	var batleFieldComp = document.querySelector('#batleFieldComp');
-	this.creatingField = function(n){
+	var creatingField = function(n){
 		var usertable = document.createElement('table');
 		var tbody = document.createElement('tbody');
 		this.battleField = new Array(n);
@@ -41,11 +42,11 @@ function Seabatle() {
 		batleFieldUser.appendChild(usertable);
 		var compTable = usertable.cloneNode(true);
 		batleFieldComp.appendChild(compTable);
-	};
+	}.bind(this);
+	creatingField(WAR_SIZE);
 	var random = false;
 	var target = "user";
 	var countLenght = 0;
-	var messageError = "Error!!! Смотри в браузер капитан!"; //TODO убрать после полного оформления корабельного журнала
 	var shipLog = document.querySelector("#shipsLog");		// Корабельнный журнал для ввода инфы из игры
 	var loged = function(messagetext){
 		var shipLogNode = document.createElement("p");
@@ -103,6 +104,8 @@ function Seabatle() {
 			e.target.nextElementSibling.innerText = "Вертикальный";
 		};
 	};
+	var user = document.querySelector("#batleFieldUser table tbody");
+	var enemy = document.querySelector("#batleFieldUser table tbody");
 	var requestBuildingShip = function(){  //функция "запроса" на построение корабля, запускает функции валидаций и после потверждение функцию стройки корабля.
 		var x = dataBuildShip.x;
 		var y = dataBuildShip.y;
@@ -135,8 +138,7 @@ function Seabatle() {
 						port.ship3 = 2;
 						port.ship2 = 3;
 						port.ship1 = 4;
-						if(target == "user") document.querySelector("#batleFieldUser table tbody").children[i].children[j].style.background = "";
-						if(target == "enemy") document.querySelector("#batleFieldComp table tbody").children[i].children[j].style.background = "";
+						if(target == "user" && user.classList.contains("tdUserShip")) user.children[i].children[j].classList.remove("tdUserShip");
 					};
 				};
 			};
@@ -150,7 +152,11 @@ function Seabatle() {
 				  msg02: 'Игрок промахнулся!',
 				  msg04: 'Компьюьер промахнулся!',
 				  msg05: 'Компьютер убил все корабли игрока! Игрок проиграл!',
-				  msg06: 'Игрок убил все корабли компьютера! Компьютер проиграл!'
+				  msg06: 'Игрок убил все корабли компьютера! Компьютер проиграл!',
+				  msg07: 'Игрок убил корабль компьютера!',
+				  msg08: 'Компьютер убил корабль игрока!',
+				  msg09: 'Игрок ранил корабль компьютера!',
+				  msg10: 'Компьютер ранил корабль игрока!'
 			};
 		var automatic = document.querySelector(".automatic");  // активация автоматической растановки
 			automatic.addEventListener("click", function(){
@@ -189,7 +195,7 @@ function Seabatle() {
 		}
 		countLenght --;
 		this.battleField[x][y][target].ship = true;
-		if(target == "user") document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "green";
+		if(target == "user") user.children[x].children[y].classList.add("tdUserShip");
 		this.battleField[x][y][target].deck = shipLenght;
 		if (countLenght <= 0) {
 			loged(errorTable.msg01);
@@ -287,27 +293,44 @@ function Seabatle() {
 			this.battleField[x][y][target].kill = true;
 			if(this.battleField[x][y][target].deck == 1){
 					if(target == "enemy"){
+						enemy.children[x].children[y].classList.add("tdKillShip");
+						loged(errorTable.msg07);
 						validationSonar();
-						document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "red";}
+					}
 					if(target == "user"){
-						if(shipWounded.woundedCount != 0) document.querySelector("#batleFieldUser table tbody").children[shipWounded.lastX].children[shipWounded.lastY].style.background = "red";
-						document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "red";
+						if(shipWounded.woundedCount != 0) {
+							user.children[shipWounded.lastX].children[shipWounded.lastY].classList.remove("tdUserShip");
+							user.children[shipWounded.lastX].children[shipWounded.lastY].classList.add("tdKillShip");;
+						}
+						user.children[x].children[y].classList.remove("tdUserShip");
+						user.children[x].children[y].classList.add("tdWoundShip");
 						shipWounded.woundedCount = 0;
 						shipWounded.deck = undefined;
+						loged(errorTable.msg08);
 						if(validationSonar())automatingShot();
 					}
-
 			} else {
 				this.battleField[x][y][target].wound = true;
 					// if(validationSonar() != true) return;
-					if(target == "enemy") document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "yellow";
+					if(target == "enemy") {
+						if(shipWounded.woundedCount != 0){
+							enemy.children[shipWounded.lastX].children[shipWounded.lastY].classList.remove("tdWoundShip");
+							enemy.children[shipWounded.lastX].children[shipWounded.lastY].classList.add("tdKillShip");
+						};
+						loged(errorTable.msg09);
+						enemy.children[x].children[y].className.add("tdWoundShip");
+					}
 					if(target == "user"){
-						if(shipWounded.woundedCount != 0) document.querySelector("#batleFieldUser table tbody").children[shipWounded.lastX].children[shipWounded.lastY].style.background = "red"; 
-						document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "yellow";
+						if(shipWounded.woundedCount != 0) {
+							user.children[shipWounded.lastX].children[shipWounded.lastY].classList.remove("tdWoundShip");
+							user.children[shipWounded.lastX].children[shipWounded.lastY].classList.add("tdKillShip");
+						}
+						user.children[x].children[y].className.add("tdWoundShip");
 						shipWounded.woundedCount = 1;	
 						shipWounded.deck = this.battleField[x][y][target].deck - 1;
 						shipWounded.lastX = x;
 						shipWounded.lastY = y;
+						loged(errorTable.msg10);
 						coordinatesRebound();
 					}
 				}
@@ -315,7 +338,7 @@ function Seabatle() {
 				this.battleField[x][y][target].missed = true;
 				this.battleField[x][y][target].deck = 0;
 				if(target == "enemy"){
-						document.querySelector("#batleFieldComp table tbody").children[x].children[y].style.background = "grey";
+						enemy.children[x].children[y].classList.add("tdMissedShip");
 					if(shipWounded.woundedCount > 0) {
 						loged(errorTable.msg02);
 						coordinatesRebound();
@@ -324,7 +347,7 @@ function Seabatle() {
 						automatingShot();
 					}
 				} else if(target == "user") {
-					document.querySelector("#batleFieldUser table tbody").children[x].children[y].style.background = "grey";
+					user.children[x].children[y].classList.add("tdMissedShip");
 					loged(errorTable.msg04);
 				}
 			}	
@@ -356,14 +379,26 @@ function Seabatle() {
 		}	
 	}.bind(this);
 	var shipWounded = {					// объект "последний раненный корабль"
-		firstX: undefined,
-		firstY: undefined,
-		lastX: undefined,
-		lastY: undefined,
-		deck: undefined,
-		woundedCount: 0,
-		shootX: undefined,
-		shootY: undefined
+			user: {
+				firstX: undefined,
+				firstY: undefined,
+				lastX: undefined,
+				lastY: undefined,
+				deck: undefined,
+				woundedCount: 0,
+				shootX: undefined,
+				shootY: undefined
+			},
+			enemy: {
+				firstX: undefined,
+				firstY: undefined,
+				lastX: undefined,
+				lastY: undefined,
+				deck: undefined,
+				woundedCount: 0,
+				shootX: undefined,
+				shootY: undefined
+			}
 	};
 	var coordinatesRebound = function(){ // Ф получающая координаты возможные для добивания раненого корабля
 		// debugger;
@@ -456,4 +491,3 @@ function Seabatle() {
 	}.bind(this);
 }
 var seabatle = new Seabatle();
-seabatle.creatingField(10);
