@@ -36,6 +36,9 @@ td{
 .tdMissedShip{
 	background-color: grey
 }
+.tdEmptyField{
+	background-color: transparent;
+}
 button{
 	width: 150px;
 }
