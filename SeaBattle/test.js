@@ -246,7 +246,6 @@ function Seabatle() {
 			buildingShip(x,(y+1),shipLenght,direction,id);
 		}
 		if(target == 'user' && (port.ship1 + port.ship2 + port.ship3 + port.ship4) == 0){
-			console.log(port.ship1 + port.ship2 + port.ship3 + port.ship4);
 			startBattle.removeAttribute('disabled');
 		}
 	}.bind(this);
@@ -507,12 +506,12 @@ function Seabatle() {
 		if (this.battleField[x][y][target].shoot == false){
 			return true;
 		} else{
-			loged(errorTable.eroor07);
+			if(target == 'enemy')loged(errorTable.eroor07);
 			return false;
 		}
 	}.bind(this);
 	var totalDestruction = function(){				// функция для добивания раненого корабля. для 3-4 палубнных кораблей
-		// debugger;
+		debugger;
 		var deathReturn = 0;
 		var doubleKill = 0;
 		for(var i = (shipWounded[target].firstX-1); i <= (shipWounded[target].firstX + 1); i++ ){
@@ -536,6 +535,10 @@ function Seabatle() {
 			return false;
 		}
 	}.bind(this);
+	var finishGame = document.querySelector('.finishbattle button');
+	finishGame.addEventListener('click', function () {
+		location.reload();
+	});
 	var validationSonar = function(){			// проверка на наличие оставшихся кораблей
 		var countAllShip = 0;
 			for (var i = 0; i <= this.battleField.length - 1; i++) {
@@ -549,10 +552,12 @@ function Seabatle() {
 		if(countAllShip <= 0 && target == "user"){
 			loged(errorTable.msg05);
 			activedClearAll(1);
+			finishGame.removeAttribute('disabled');
 			return false;
 		} else if(countAllShip <= 0 && target == "enemy"){
 			loged(errorTable.msg06);
 			activedClearAll(1);
+			finishGame.removeAttribute('disabled');
 			return false;
 		}
 	}.bind(this);

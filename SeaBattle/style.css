@@ -80,15 +80,6 @@ button[disabled]{
 	font-weight: 300;
 	color: #54abbd;
 }
-button[disabled]:hover{
-	background-color: #e5e5e5;
-	font-weight: 300;
-	color: #54abbd;
-}
-button:hover{
-	background-color: #0277bd;
-	color: #eeeeee;
-}
 .paluba{
 	width: 150px;
 }
