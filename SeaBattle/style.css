@@ -13,10 +13,10 @@ body{
 }
 .firstTitle{
 	min-width: 100%;
-	min-height: 40px;
+	height: 60px;
 	line-height: 50px;
 	margin: 0 auto;
-	color: #eeeeee;
+	color: #ffffff;
 	background-color: #0277bd;
 	text-align: center;
 }
@@ -68,7 +68,28 @@ td{
 .tdEmptyField{
 	background-color: transparent;
 }
-button, .paluba{
+button{
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: bold;
+	width: 150px;
+	color: #0277bd;
+}
+
+button[disabled]{
+	font-weight: 300;
+	color: #54abbd;
+}
+button[disabled]:hover{
+	background-color: #e5e5e5;
+	font-weight: 300;
+	color: #54abbd;
+}
+button:hover{
+	background-color: #0277bd;
+	color: #eeeeee;
+}
+.paluba{
 	width: 150px;
 }
 .column{
