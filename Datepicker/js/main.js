@@ -15,7 +15,16 @@ var months = ["Январь", "Февраль", "Март", "Апрель", "М�
 var curentYear = now.getFullYear();
 var countMonth = now.getMonth();
 var curentMonth = months[countMonth];
-var CURENT_MONTH_INDEX = 0;
+(function () {
+    console.log('now: ', now);
+    console.log('curentYear', curentYear);
+    console.log('countMonth', countMonth);
+    console.log('curentMonth', curentMonth);
+    console.dir(now);
+    console.dir(curentYear);
+    console.dir(countMonth);
+    console.dir(curentMonth);
+})();
 curentWrapperMonth.textContent = curentMonth;
 yearVisible.textContent = curentYear;
 curentWrapperYear.appendChild(yearVisible);
@@ -29,31 +38,42 @@ previousButtonMonth.addEventListener("click", function () {
 });
 
 function monthNextPrevioius(index) {
-    // debugger;
-    CURENT_MONTH_INDEX = (index == 0) ? CURENT_MONTH_INDEX+1 : CURENT_MONTH_INDEX-1;
-    countMonth = countMonth+CURENT_MONTH_INDEX;
+    (index == 0) ? countMonth++ : countMonth--;
     if(countMonth >= 0 && countMonth <= 11){
         countMonth = countMonth;
+        console.log('countMonth', countMonth);
     } else if(countMonth < 0){
-        countMonth = 12 + CURENT_MONTH_INDEX;
-        if(countMonth == 0) CURENT_MONTH_INDEX = 0;
-        if(countMonth == 11) {
-            yearNextPrevioius(index);
-            // curentYear = (curentYear == now.getFullYear()) ? now.getFullYear() - 1 : curentYear - 1;
-        }
+        countMonth = 11;
+        curentYear--;
     } else if(countMonth > 11){
-        countMonth = 0
-        CURENT_MONTH_INDEX = 0;
-        yearNextPrevioius(index);
-        // curentYear = (curentYear == now.getFullYear()) ? now.getFullYear() + 1 : curentYear + 1;
+        countMonth = 0;
+        curentYear++;
     }
-    curentMonth = months[now.getMonth()+countMonth];
-    countMonth = now.getMonth()
+    curentMonth = months[countMonth];
     curentWrapperMonth.textContent = curentMonth;
     yearVisible.textContent = curentYear;
 };
+var wrapperDays = document.querySelector(".wrapperDays")
+var daysTable = document.createElement('table');
+var thead = document.createElement('thead');
+var tbody = document.createElement('tbody');
 
-function yearNextPrevioius(index){
-    var countYear = (index == 0) ? -1 : 1;
-    curentYear = (curentYear == now.getFullYear()) ? now.getFullYear() - countYear : curentYear - countYear;
-}
+
+function getDays () {
+    var daysMonth = new Array(7);
+    for (var i = 0; i < 7; i++){
+        var tr = document.createElement('tr');
+        daysMonth[i] = new Array(7);
+        for(var j = 0; j < 7; j++){
+            var th = document.createElement('th');
+            var td = document.createElement('td');
+            if(i == 0)tr.appendChild(th);
+            if(i > 0) tr.appendChild(td);
+        };
+        tbody.appendChild(tr);
+    };
+    daysTable.appendChild(tbody);
+    wrapperDays.appendChild(daysTable);
+};
+getDays();
+

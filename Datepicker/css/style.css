@@ -10,6 +10,11 @@
 .wrapperMonth, .wrapperYear{
     text-align: center;
 }
+.wrapperDays{
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+}
 .buttonMonth{
     cursor: pointer;
     display: inline-block;
@@ -24,4 +29,9 @@
 .curentMonth{
     display: inline-block;
     width: 100px;
+}
+td{
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
 }
